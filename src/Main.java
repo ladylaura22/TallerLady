@@ -1,6 +1,8 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
+    // --- Bloque de animales ---
     private Map<String, List<Animal>> clasificacion;
     private List<Animal> animales;
 
@@ -44,10 +46,90 @@ public class Main {
         return texto.substring(0, 1).toUpperCase() + texto.substring(1);
     }
 
+    // --- Bloque de personas ---
+    public static void ingresarYProcesarPersonas() {
+        Scanner scanner = new Scanner(System.in);
+        List<Persona> personas = new ArrayList<>();
+
+        String continuar;
+        do {
+            System.out.print("Nombre: ");
+            String nombre = scanner.nextLine();
+
+            System.out.print("Apellido: ");
+            String apellido = scanner.nextLine();
+
+            System.out.print("Edad: ");
+            int edad = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Género: ");
+            String genero = scanner.nextLine();
+
+            System.out.print("Sueldo por hora: ");
+            double sueldoHora = Double.parseDouble(scanner.nextLine());
+
+            System.out.print("Cargo: ");
+            String cargo = scanner.nextLine();
+
+            personas.add(new Persona(nombre, apellido, edad, genero, sueldoHora, cargo));
+
+            System.out.print("¿Desea ingresar otra persona? (s/n): ");
+            continuar = scanner.nextLine();
+
+        } while (continuar.equalsIgnoreCase("s"));
+
+        // a. Cantidad de personas
+        long cantidad = personas.stream().count();
+
+        // b. Promedio de edades
+        OptionalDouble promedioEdades = personas.stream()
+                .mapToInt(Persona::getEdad)
+                .average();
+
+        // c. Personas mayores de edad (>= 18)
+        List<Persona> mayoresEdad = personas.stream()
+                .filter(p -> p.getEdad() >= 18)
+                .collect(Collectors.toList());
+
+        // d. Personas cuyos nombres empiezan con "A"
+        List<Persona> nombresConA = personas.stream()
+                .filter(p -> p.getNombre().startsWith("A"))
+                .collect(Collectors.toList());
+
+        // e. Personas cuyos apellidos contienen "M"
+        List<Persona> apellidosContienenM = personas.stream()
+                .filter(p -> p.getApellido().contains("M"))
+                .collect(Collectors.toList());
+
+        // Mostrar resultados
+        System.out.println("\nResumen:");
+        System.out.println("Cantidad de personas: " + cantidad);
+        if (promedioEdades.isPresent()) {
+            System.out.println("Edad promedio: " + promedioEdades.getAsDouble());
+        } else {
+            System.out.println("No hay personas ingresadas.");
+        }
+
+        System.out.println("\nPersonas mayores de edad:");
+        mayoresEdad.forEach(System.out::println);
+
+        System.out.println("\nPersonas cuyos nombres empiezan con 'A':");
+        nombresConA.forEach(System.out::println);
+
+        System.out.println("\nPersonas cuyos apellidos contienen 'M':");
+        apellidosContienenM.forEach(System.out::println);
+
+        scanner.close();
+    }
+
     public static void main(String[] args) {
+        // Animales
         Main app = new Main();
         app.ingresarAnimales();
         System.out.println("\nClasificación de animales:");
         app.mostrarClasificacion();
+
+        // Personas
+        ingresarYProcesarPersonas();
     }
 }
