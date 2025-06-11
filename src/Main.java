@@ -62,8 +62,9 @@ public class Main {
             System.out.print("Edad: ");
             int edad = Integer.parseInt(scanner.nextLine());
 
-            System.out.print("Género: ");
-            String genero = scanner.nextLine();
+            System.out.print("Género: (M/F");
+            String genero = scanner.nextLine().toLowerCase();
+
 
             System.out.print("Sueldo por hora: ");
             double sueldoHora = Double.parseDouble(scanner.nextLine());
@@ -73,10 +74,10 @@ public class Main {
 
             personas.add(new Persona(nombre, apellido, edad, genero, sueldoHora, cargo));
 
-            System.out.print("¿Desea ingresar otra persona? (s/n): ");
-            continuar = scanner.nextLine();
+            System.out.print("¿Desea ingresar otra persona? (SI/NO): ");
+            continuar = scanner.nextLine().toLowerCase();
 
-        } while (continuar.equalsIgnoreCase("s"));
+        } while (continuar.equalsIgnoreCase("si"));
 
         // a. Cantidad de personas
         long cantidad = personas.stream().count();
@@ -119,8 +120,15 @@ public class Main {
         System.out.println("\nPersonas cuyos apellidos contienen 'M':");
         apellidosContienenM.forEach(System.out::println);
 
-        scanner.close();
+
+        personas.stream()
+                .filter(p -> p.getCargo().equalsIgnoreCase("director") && p.getGenero().equalsIgnoreCase("m"))
+                .map(p -> p.getSueldoHora() * 8)
+                .forEach(sueldo -> System.out.println("Sueldo por 8 horas: $" + (long)sueldo));
+
+
     }
+
 
     public static void main(String[] args) {
         // Animales
@@ -131,5 +139,6 @@ public class Main {
 
         // Personas
         ingresarYProcesarPersonas();
+
     }
-}
+
