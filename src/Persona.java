@@ -67,4 +67,6 @@ public class Persona {
     public String toString() {
         return nombre + " " + apellido + " (Edad: " + edad + ", Género: " + genero + ", Sueldo/Hora: " + sueldoHora + ", Cargo: " + cargo + ")";
     }
+
+
 }

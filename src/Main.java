@@ -50,7 +50,8 @@ public class Main {
     public static void ingresarYProcesarPersonas() {
         Scanner scanner = new Scanner(System.in);
         List<Persona> personas = new ArrayList<>();
-
+        system.out.println("------------ Ingreso de Personas ------");
+        System.out.println("Ingrese los datos de las personas:");
         String continuar;
         do {
             System.out.print("Nombre: ");
@@ -121,10 +122,34 @@ public class Main {
         apellidosContienenM.forEach(System.out::println);
 
 
+        // a. Directores masculinos
         personas.stream()
                 .filter(p -> p.getCargo().equalsIgnoreCase("director") && p.getGenero().equalsIgnoreCase("m"))
+                .peek(p -> System.out.print("Nombre: " + p.getNombre() + " " + p.getApellido() + " "))
                 .map(p -> p.getSueldoHora() * 8)
-                .forEach(sueldo -> System.out.println("Sueldo por 8 horas: $" + (long)sueldo));
+                .forEach(sueldo -> System.out.println("Sueldo por 8 horas: $" + sueldo.longValue()));
+
+        // b. Primera desarrolladora
+        Optional<Persona> primeraDesarrolladora = personas.stream()
+                .filter(p -> p.getCargo().equalsIgnoreCase("desarrollador") && p.getGenero().equalsIgnoreCase("f"))
+                .findFirst();
+        primeraDesarrolladora.ifPresent(p -> System.out.println("Primera desarrolladora: " + p));
+
+        // OPTIONAL Se usa para evitar errores de NullPointerException y para expresar explícitamente que un valor puede estar ausente.
+        // c. Desarrollador que más gana por hora
+        Optional<Persona> masGana = personas.stream()
+                .filter(p -> p.getCargo().equalsIgnoreCase("desarrollador"))
+                .max(Comparator.comparingDouble(Persona::getSueldoHora));
+        if (masGana.isPresent()) {
+            System.out.println("Desarrollador que más gana por hora: " + masGana.get());
+        }
+
+        // d. Mostrar todas las mujeres ordenadas por su nombre
+        System.out.println("\nMujeres ordenadas por nombre:");
+        personas.stream()
+                .filter(p -> p.getGenero().equalsIgnoreCase("f"))
+                .sorted(Comparator.comparing(Persona::getNombre))
+                .forEach(System.out::println);
 
 
     }
@@ -139,6 +164,6 @@ public class Main {
 
         // Personas
         ingresarYProcesarPersonas();
-
     }
+}
 
