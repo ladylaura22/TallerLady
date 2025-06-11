@@ -13,6 +13,7 @@ public class Main {
 
     public void ingresarAnimales() {
         Scanner sc = new Scanner(System.in);
+        System.out.println("------------ Ingreso de Animales ------");
         String continuar;
         do {
             System.out.print("Nombre del animal: ");
@@ -50,7 +51,7 @@ public class Main {
     public static void ingresarYProcesarPersonas() {
         Scanner scanner = new Scanner(System.in);
         List<Persona> personas = new ArrayList<>();
-        system.out.println("------------ Ingreso de Personas ------");
+        System.out.println("------------ Ingreso de Personas ------");
         System.out.println("Ingrese los datos de las personas:");
         String continuar;
         do {
@@ -63,7 +64,7 @@ public class Main {
             System.out.print("Edad: ");
             int edad = Integer.parseInt(scanner.nextLine());
 
-            System.out.print("Género: (M/F");
+            System.out.print("Género: (M/F) ");
             String genero = scanner.nextLine().toLowerCase();
 
 
@@ -100,7 +101,7 @@ public class Main {
 
         // e. Personas cuyos apellidos contienen "M"
         List<Persona> apellidosContienenM = personas.stream()
-                .filter(p -> p.getApellido().contains("M"))
+                .filter(p -> p.getApellido().toUpperCase().contains("M"))
                 .collect(Collectors.toList());
 
         // Mostrar resultados
@@ -127,7 +128,7 @@ public class Main {
                 .filter(p -> p.getCargo().equalsIgnoreCase("director") && p.getGenero().equalsIgnoreCase("m"))
                 .peek(p -> System.out.print("Nombre: " + p.getNombre() + " " + p.getApellido() + " "))
                 .map(p -> p.getSueldoHora() * 8)
-                .forEach(sueldo -> System.out.println("Sueldo por 8 horas: $" + sueldo.longValue()));
+                .forEach(sueldo -> System.out.println("Sueldo por 8 horas: $" + (long) sueldo.doubleValue()));
 
         // b. Primera desarrolladora
         Optional<Persona> primeraDesarrolladora = personas.stream()
